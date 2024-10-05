@@ -10,7 +10,6 @@ Scotland Yard Tracker is a web application that helps detectives in the search f
 - [Installation](#installation)
 - [Usage](#usage)
 - [Contributing](#contributing)
-- [License](#license)
 
 ## Demo
 
@@ -28,7 +27,6 @@ Scotland Yard Tracker is a web application that helps detectives in the search f
 - HTML5
 - CSS3
 - JavaScript
-- [Roboto Font](https://fonts.google.com/specimen/Roboto) (Google Fonts)
 
 ## Installation
 
