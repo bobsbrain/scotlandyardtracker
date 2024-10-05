@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Scotland Yard Tracker - Supports detectives in the search for Mister X">
+    <meta name="theme-color" content="#6200ee">
+    <title>Scotland Yard Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🕵🏻</text></svg>">
+</head>
+<body>
+    <div class="container">
+        <h1>Possible Positions of Mister X</h1>
+        <div id="possiblePositions">Possible Positions: </div>
+
+        <h2>Transport Modes</h2>
+        <div class="button-group">
+            <button id="taxiButton" onclick="moveMisterX('taxi')">Taxi</button>
+            <button id="busButton" onclick="moveMisterX('bus')">Bus</button>
+            <button id="undergroundButton" onclick="moveMisterX('underground')">Underground</button>
+            <button id="secretButton" onclick="moveMisterX('secret')">Secret Move</button>
+        </div>
+
+        <h2>Set Mister X Position</h2>
+        <div class="input-group">
+            <input type="number" id="misterXPosition" placeholder="Mister X Position" min="1" max="199">
+            <button onclick="setMisterXPosition()">Set</button>
+        </div>
+
+        <h2>Enter Detective Positions</h2>
+        <div class="input-group">
+            <input type="text" id="detectivePositions" placeholder="Detective Positions (e.g. 3, 5)">
+            <button onclick="updateDetectivePositions()">Remove</button>
+        </div>
+
+        <div class="positions" id="positionsLog"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
