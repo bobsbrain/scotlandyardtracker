@@ -203,7 +203,7 @@ const map = new Map([
 let possiblePositions = [35, 45, 51, 71, 78, 104, 106, 127, 132, 146, 166, 170, 172];
 
 /**
- * Entfernt die aktuelle Markierung aller markierten Felder.
+ * Removes the current marking of all marked fields.
  */
 function clearMarkedFields() {
     document.querySelectorAll('.marked-fields').forEach((element) => {
@@ -212,7 +212,7 @@ function clearMarkedFields() {
 }
 
 /**
- * Markiert die neuen möglichen Positionen von Mister X.
+ * Marks the new possible positions of Mister X.
  */
 function updateMarkedFields() {
     clearMarkedFields();
@@ -278,7 +278,7 @@ function updatePossiblePositions(transport, secretMove = false) {
  */
 function renderPossiblePositions() {
     document.getElementById('possiblePositions').textContent = `${possiblePositions.join(', ')}`;
-    addCircleEventListeners(); // Event Listener hinzufügen
+    addCircleEventListeners(); // Add event listeners
 }
 
 /**
@@ -327,21 +327,21 @@ function updateDetectivePositions() {
 }
 
 /**
- * Entfernt die Position eines geklickten Kreises von den möglichen Positionen von Mister X
- * und entfernt auch die marked-fields Klasse von dem entsprechenden Element.
- * @param {number} position - Die Position, die entfernt werden soll.
+ * Removes the position of a clicked circle from the possible positions of Mister X
+ * and also removes the marked-fields class from the corresponding element.
+ * @param {number} position - The position to be removed.
  */
 function removePosition(position) {
-    // Entfernen der marked-fields Klasse vom entsprechenden Element
+    // Remove the marked-fields class from the corresponding element
     const element = document.getElementById(`${position}`);
     if (element) {
-        element.classList.remove('marked-fields'); // Klasse entfernen
+        element.classList.remove('marked-fields'); // Remove class
     }
 
-    // Entfernen der Position aus den möglichen Positionen
+    // Remove the position from the possible positions
     possiblePositions = possiblePositions.filter(pos => pos !== position);
 
-    // UI aktualisieren
+    // Update UI
     renderPossiblePositions();
     log(`Position ${position} removed from possible positions.`);
     updateButtonStates();
@@ -349,7 +349,7 @@ function removePosition(position) {
 }
 
 /**
- * Funktion zum Hinzufügen der Event Listener zu den Kreisen
+ * Function to add event listeners to the circles
  */
 function addCircleEventListeners() {
     possiblePositions.forEach(position => {

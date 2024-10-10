@@ -13,7 +13,7 @@ Scotland Yard Tracker is a web application that helps detectives in the search f
 
 ## Demo
 
-[Link to live demo](https://codepen.io/bobsbrain-the-looper/pen/rNXLyKL) on codepen.io
+[Link to live demo](https://bobsbrain.github.io/scotlandyardtracker/) on github-pages
 
 ## Features
 
@@ -35,12 +35,12 @@ To get started with Scotland Yard Tracker, follow these steps:
 1. Clone the repository to your local machine:
 
    ```bash
-   git clone https://github.com/yourusername/scotland-yard-tracker.git
+   git clone https://github.com/yourusername/scotlandyardtracker.git
    ```
 2. Navigate to the project directory:
 
    ```bash
-   cd scotland-yard-tracker
+   cd scotlandyardtracker
    ```
 3. Open `index.html` in your web browser to view the application.
 

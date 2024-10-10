@@ -358,6 +358,7 @@ rect + g g path {
 
 circle.marked-fields[id] {
     cursor: pointer;
+    filter: drop-shadow(2px 4px 6px var(--clr-black-pure));
 }
 
 text {
