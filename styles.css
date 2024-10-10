@@ -207,7 +207,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100svh; /* Ensures full viewport height */
 }
 
 /* Main Grid Layout */
@@ -363,4 +363,65 @@ circle.marked-fields[id] {
 
 text {
     pointer-events: none;
+}
+
+/* Styling for smaller screens */
+@media (max-width: 768px) {
+    .main-container {
+        grid-template-columns: 1fr; /* Stacks the controls and SVG container */
+        height: auto; /* Allows the container to grow */
+    }
+
+    /* Adjusts SVG container to align at the bottom on mobile */
+    .svg-container {
+        order: 2;
+        width: 100%;
+        height: auto;
+    }
+
+    /* Makes the controls take full width */
+    .container.controls {
+        width: 100%;
+        padding: 1rem 0.5rem;
+    }
+
+    /* Adjust button sizes for touch interaction */
+    button {
+        padding: 0.75rem;
+        font-size: 1rem;
+    }
+
+    /* Stack buttons vertically */
+    .button-group {
+        grid-template-columns: repeat(2, 1fr); /* Reduces buttons per row */
+        gap: 0.5rem;
+    }
+
+    /* Input group elements take full width */
+    .input-group input,
+    .input-group button {
+        font-size: 1rem;
+        padding: 0.5rem;
+        width: auto; /* Full width for better usability */
+    }
+
+    /* Adjusts font sizes for better readability */
+    h1 {
+        font-size: 1.25rem;
+    }
+
+    h2 {
+        font-size: 1rem;
+    }
+
+    #possiblePositions {
+        font-size: 0.875rem;
+    }
+
+    /* Adjust the positions log area */
+    #positionsLog {
+        font-size: 0.75rem;
+        padding: 0.25rem;
+        max-height: 4rem;
+    }
 }

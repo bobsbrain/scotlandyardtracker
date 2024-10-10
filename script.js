@@ -327,26 +327,31 @@ function updateDetectivePositions() {
 }
 
 /**
- * Removes the position of a clicked circle from the possible positions of Mister X
- * and also removes the marked-fields class from the corresponding element.
- * @param {number} position - The position to be removed.
- */
+* Removes the position of a clicked circle from the possible positions of Mister X
+* and also removes the marked-fields class and event listener from the corresponding element.
+* @param {number} position - The position to be removed.
+*/
 function removePosition(position) {
-    // Remove the marked-fields class from the corresponding element
-    const element = document.getElementById(`${position}`);
-    if (element) {
-        element.classList.remove('marked-fields'); // Remove class
-    }
+   // Remove the marked-fields class from the corresponding element
+   const element = document.getElementById(`${position}`);
+   if (element) {
+       element.classList.remove('marked-fields'); // Remove class
+       // Remove the click event listener
+       element.removeEventListener('click', () => {
+           removePosition(position);
+       });
+   }
 
-    // Remove the position from the possible positions
-    possiblePositions = possiblePositions.filter(pos => pos !== position);
+   // Remove the position from the possible positions
+   possiblePositions = possiblePositions.filter(pos => pos !== position);
 
-    // Update UI
-    renderPossiblePositions();
-    log(`Position ${position} removed from possible positions.`);
-    updateButtonStates();
-    updateMarkedFields();
+   // Update UI
+   renderPossiblePositions();
+   log(`Position ${position} removed from possible positions.`);
+   updateButtonStates();
+   updateMarkedFields();
 }
+
 
 /**
  * Function to add event listeners to the circles
