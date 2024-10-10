@@ -198,145 +198,182 @@ const map = new Map([
     [197, {taxi: [184, 195, 196], bus: [], underground: [], ferry: []}],
     [198, {taxi: [159, 186, 187, 199], bus: [], underground: [], ferry: []}],
     [199, {taxi: [171, 188, 198], bus: [128, 161], underground: [], ferry: []}]
-    ]);
+]);
     
-    let possiblePositions = [35, 45, 51, 71, 78, 104, 106, 127, 132, 146, 166, 170, 172];
+let possiblePositions = [35, 45, 51, 71, 78, 104, 106, 127, 132, 146, 166, 170, 172];
 
-    /**
-     * Entfernt die aktuelle Markierung aller markierten Felder.
-     */
-    function clearMarkedFields() {
-        document.querySelectorAll('.marked-fields').forEach((element) => {
-            element.classList.remove('marked-fields');
-        });
-    }
-    
-    /**
-     * Markiert die neuen möglichen Positionen von Mister X.
-     */
-    function updateMarkedFields() {
-        clearMarkedFields();
-        possiblePositions.forEach(position => {
-            const element = document.getElementById(`${position}`);
-            if (element) {
-                element.classList.add('marked-fields');
-            }
-        });
-    }
-    
-    /**
-     * Updates the states of the transport buttons based on the current possible positions of Mister X.
-     * The taxi button is always enabled, while the bus and underground buttons are enabled or disabled 
-     * depending on the availability of transport options.
-     */
-    function updateButtonStates() {
-        const hasBus = possiblePositions.some(position => map.get(position).bus.length > 0);
-        const hasUnderground = possiblePositions.some(position => map.get(position).underground.length > 0);
-    
-        // Taxi is always enabled
-        document.getElementById('taxiButton').disabled = false;
-    
-        // Enable/disable bus and underground buttons based on availability
-        document.getElementById('busButton').disabled = !hasBus;
-        document.getElementById('undergroundButton').disabled = !hasUnderground;
-    }
-    
-    /**
-     * Updates the possible positions of Mister X based on the chosen transport mode.
-     *
-     * @param {string} transport - The type of transport ('taxi', 'bus', 'underground', or 'secret').
-     * @param {boolean} [secretMove=false] - Indicates if the secret move option is being used.
-     */
-    function updatePossiblePositions(transport, secretMove = false) {
-        let newPositions = new Set();
-    
-        possiblePositions.forEach((position) => {
-            const connections = map.get(position);
-            if (!connections) return;
-    
-            if (secretMove) {
-                ['taxi', 'bus', 'underground', 'ferry'].forEach((mode) => {
-                    connections[mode].forEach((newPosition) => {
-                        newPositions.add(newPosition);
-                    });
-                });
-            } else {
-                connections[transport].forEach((newPosition) => {
+/**
+ * Entfernt die aktuelle Markierung aller markierten Felder.
+ */
+function clearMarkedFields() {
+    document.querySelectorAll('.marked-fields').forEach((element) => {
+        element.classList.remove('marked-fields');
+    });
+}
+
+/**
+ * Markiert die neuen möglichen Positionen von Mister X.
+ */
+function updateMarkedFields() {
+    clearMarkedFields();
+    possiblePositions.forEach(position => {
+        const element = document.getElementById(`${position}`);
+        if (element) {
+            element.classList.add('marked-fields');
+        }
+    });
+}
+
+/**
+ * Updates the states of the transport buttons based on the current possible positions of Mister X.
+ * The taxi button is always enabled, while the bus and underground buttons are enabled or disabled 
+ * depending on the availability of transport options.
+ */
+function updateButtonStates() {
+    const hasBus = possiblePositions.some(position => map.get(position).bus.length > 0);
+    const hasUnderground = possiblePositions.some(position => map.get(position).underground.length > 0);
+
+    // Taxi is always enabled
+    document.getElementById('taxiButton').disabled = false;
+
+    // Enable/disable bus and underground buttons based on availability
+    document.getElementById('busButton').disabled = !hasBus;
+    document.getElementById('undergroundButton').disabled = !hasUnderground;
+}
+
+/**
+ * Updates the possible positions of Mister X based on the chosen transport mode.
+ *
+ * @param {string} transport - The type of transport ('taxi', 'bus', 'underground', or 'secret').
+ * @param {boolean} [secretMove=false] - Indicates if the secret move option is being used.
+ */
+function updatePossiblePositions(transport, secretMove = false) {
+    let newPositions = new Set();
+
+    possiblePositions.forEach((position) => {
+        const connections = map.get(position);
+        if (!connections) return;
+
+        if (secretMove) {
+            ['taxi', 'bus', 'underground', 'ferry'].forEach((mode) => {
+                connections[mode].forEach((newPosition) => {
                     newPositions.add(newPosition);
                 });
-            }
-        });
-    
-        possiblePositions = Array.from(newPositions).sort((a, b) => a - b);
-        renderPossiblePositions();
-        updateButtonStates();
-        updateMarkedFields();
-    }
-    
-    /**
-     * Renders the current possible positions of Mister X in the user interface.
-     */
-    function renderPossiblePositions() {
-        document.getElementById('possiblePositions').textContent = `Possible positions: ${possiblePositions.join(', ')}`;
-    }
-    
-    /**
-     * Moves Mister X based on the selected transport mode.
-     *
-     * @param {string} transport - The type of transport used ('taxi', 'bus', 'underground', or 'secret').
-     */
-    function moveMisterX(transport) {
-        if (transport === 'secret') {
-            updatePossiblePositions('', true);
+            });
         } else {
-            updatePossiblePositions(transport);
+            connections[transport].forEach((newPosition) => {
+                newPositions.add(newPosition);
+            });
         }
-        updateButtonStates();
+    });
+
+    possiblePositions = Array.from(newPositions).sort((a, b) => a - b);
+    renderPossiblePositions();
+    updateButtonStates();
+    updateMarkedFields();
+}
+
+/**
+ * Renders the current possible positions of Mister X in the user interface.
+ */
+function renderPossiblePositions() {
+    document.getElementById('possiblePositions').textContent = `${possiblePositions.join(', ')}`;
+    addCircleEventListeners(); // Event Listener hinzufügen
+}
+
+/**
+ * Moves Mister X based on the selected transport mode.
+ *
+ * @param {string} transport - The type of transport used ('taxi', 'bus', 'underground', or 'secret').
+ */
+function moveMisterX(transport) {
+    if (transport === 'secret') {
+        updatePossiblePositions('', true);
+    } else {
+        updatePossiblePositions(transport);
     }
-    
-    /**
-     * Sets the position of Mister X based on user input.
-     * The input is validated, and if it's valid, the possible positions are updated.
-     */
-    function setMisterXPosition() {
-        const position = parseInt(document.getElementById('misterXPosition').value);
-        if (!isNaN(position)) {
-            possiblePositions = [position];
-            renderPossiblePositions();
-            log(`Mister X has been set to position ${position}.`);
-        }
-        updateButtonStates();
-        updateMarkedFields();
-    }
-    
-    /**
-     * Updates the possible positions of Mister X by removing the positions of detectives.
-     * The positions are taken from user input, which is processed and validated.
-     */
-    function updateDetectivePositions() {
-        const input = document.getElementById('detectivePositions').value;
-        const detectivePositions = input.split(',').map(pos => parseInt(pos.trim())).filter(pos => !isNaN(pos));
-    
-        possiblePositions = possiblePositions.filter(pos => !detectivePositions.includes(pos));
+    updateButtonStates();
+}
+
+/**
+ * Sets the position of Mister X based on user input.
+ * The input is validated, and if it's valid, the possible positions are updated.
+ */
+function setMisterXPosition() {
+    const position = parseInt(document.getElementById('misterXPosition').value);
+    if (!isNaN(position)) {
+        possiblePositions = [position];
         renderPossiblePositions();
-        log(`Detective positions ${detectivePositions.join(', ')} removed.`);
-    
-        updateButtonStates();
-        updateMarkedFields();
+        log(`Mister X has been set to position ${position}.`);
     }
-    
-    /**
-     * Logs messages to the positions log section in the user interface.
-     *
-     * @param {string} message - The message to be logged.
-     */
-    function log(message) {
-        const logDiv = document.getElementById('positionsLog');
-        const newLog = document.createElement('div');
-        newLog.textContent = message;
-        logDiv.appendChild(newLog);
+    updateButtonStates();
+    updateMarkedFields();
+}
+
+/**
+ * Updates the possible positions of Mister X by removing the positions of detectives.
+ * The positions are taken from user input, which is processed and validated.
+ */
+function updateDetectivePositions() {
+    const input = document.getElementById('detectivePositions').value;
+    const detectivePositions = input.split(',').map(pos => parseInt(pos.trim())).filter(pos => !isNaN(pos));
+
+    possiblePositions = possiblePositions.filter(pos => !detectivePositions.includes(pos));
+    renderPossiblePositions();
+    log(`Detective positions ${detectivePositions.join(', ')} removed.`);
+
+    updateButtonStates();
+    updateMarkedFields();
+}
+
+/**
+ * Entfernt die Position eines geklickten Kreises von den möglichen Positionen von Mister X
+ * und entfernt auch die marked-fields Klasse von dem entsprechenden Element.
+ * @param {number} position - Die Position, die entfernt werden soll.
+ */
+function removePosition(position) {
+    // Entfernen der marked-fields Klasse vom entsprechenden Element
+    const element = document.getElementById(`${position}`);
+    if (element) {
+        element.classList.remove('marked-fields'); // Klasse entfernen
     }
-    
-    renderPossiblePositions(); // Initial display of possible positions
-    updateButtonStates(); // Initial check of button states
-    updateMarkedFields(); // Initial marking of possible positions
+
+    // Entfernen der Position aus den möglichen Positionen
+    possiblePositions = possiblePositions.filter(pos => pos !== position);
+
+    // UI aktualisieren
+    renderPossiblePositions();
+    log(`Position ${position} removed from possible positions.`);
+    updateButtonStates();
+    updateMarkedFields();
+}
+
+/**
+ * Funktion zum Hinzufügen der Event Listener zu den Kreisen
+ */
+function addCircleEventListeners() {
+    possiblePositions.forEach(position => {
+        const circle = document.getElementById(`${position}`);
+        if (circle) {
+            circle.addEventListener('click', () => {
+                removePosition(position);
+            });
+        }
+    });
+}
+
+/**
+ * Logs messages to the positions log section in the user interface.
+ *
+ * @param {string} message - The message to be logged.
+ */
+function log(message) {
+    const logDiv = document.getElementById('positionsLog');
+    const newLog = document.createElement('div');
+    newLog.textContent = message;
+    logDiv.appendChild(newLog);
+}
+
+renderPossiblePositions(); // Initial display of possible positions
+updateButtonStates(); // Initial check of button states
+updateMarkedFields(); // Initial marking of possible positions
