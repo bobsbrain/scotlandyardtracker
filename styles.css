@@ -375,14 +375,12 @@ text {
     /* Adjusts SVG container to align at the bottom on mobile */
     .svg-container {
         order: 2;
-        width: 100%;
         height: auto;
         padding: 1rem 0.5rem;
     }
 
     /* Makes the controls take full width */
     .container.controls {
-        width: 100%;
         padding: 1rem 0.5rem;
     }
 
